@@ -34,6 +34,21 @@ describe('quick-temp', function() {
     expect(fs.existsSync(this.obj.tmpDir)).to.be.true;
   });
 
+  it('names the directory after the class and property', function() {
+    const dir = quickTemp.makeOrRemake(this.obj, 'tmpDir', 'BroccoliMergeTrees');
+    expect(path.basename(dir)).to.match(/^broccoli_merge_trees-tmp_dir-\w{8}\.tmp$/);
+  });
+
+  it('cleans the class and property names', function() {
+    const dir = quickTemp.makeOrRemake(this.obj, 'tmpDir', ' My-HTTP Funnel2 ');
+    expect(path.basename(dir)).to.match(/^my_http_funnel-tmp_dir-\w{8}\.tmp$/);
+  });
+
+  it('omits the class name for plain objects', function() {
+    const dir = quickTemp.makeOrRemake(this.obj, 'tmpDir');
+    expect(path.basename(dir)).to.match(/^tmp_dir-\w{8}\.tmp$/);
+  });
+
   it('remove deletes the directory and nulls property', function() {
     const dir = quickTemp.makeOrRemake(this.obj, 'tmpDir', 'MyClass');
     quickTemp.remove(this.obj, 'tmpDir');
