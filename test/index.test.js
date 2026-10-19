@@ -44,6 +44,11 @@ describe('quick-temp', function() {
     expect(path.basename(dir)).to.match(/^my_http_funnel-tmp_dir-\w{8}\.tmp$/);
   });
 
+  it('splits words after a digit', function() {
+    const dir = quickTemp.makeOrRemake(this.obj, 'tmpDir', 'Funnel2Plugin');
+    expect(path.basename(dir)).to.match(/^funnel_plugin-tmp_dir-\w{8}\.tmp$/);
+  });
+
   it('omits the class name for plain objects', function() {
     const dir = quickTemp.makeOrRemake(this.obj, 'tmpDir');
     expect(path.basename(dir)).to.match(/^tmp_dir-\w{8}\.tmp$/);
